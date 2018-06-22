@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use App\Role;
+use Auth;
+use Illuminate\Database\Eloquent\Model;
 
 class HomeController extends Controller
 {
@@ -23,6 +27,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+
+        $usersid =  Auth::user()->id;
+
+        $roles = User::find($usersid)->roles;
+
+
+        return view('home')->with('roles', $roles);
+
     }
 }
