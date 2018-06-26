@@ -17,10 +17,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/contact', 'ContactController@index')->name('contact');
+Route::post('/contact', 'ContactController@store')->name('mes.store');
 
-Route::group(['middleware' => ['auth', 'admin'], 'prefix' => '/admin'], function() {
-    //Route::get('/', 'Admin\DashboardController@index')->name('admin.index');
+Route::group(['middleware' => ['auth', 'admin'], 'prefix' => '/admin'], function() {    
     Route::get('/','AdminController@index')->name('admin.index');
+    Route::get('/{id}', 'AdminController@getMessage')->name('mes.show')->where('id', '[0-9]+');
+    Route::post('/', 'AdminController@MarkAnswered')->name('mark');
 });
 

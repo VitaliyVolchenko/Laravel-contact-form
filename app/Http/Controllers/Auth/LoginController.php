@@ -34,7 +34,7 @@ class LoginController extends Controller
         if(Auth::user()->isAdmin()){
             return redirect('/admin');
         } else {
-            return redirect('/home');
+            return redirect('/contact');
         }
 
     }
