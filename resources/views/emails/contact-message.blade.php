@@ -5,9 +5,10 @@
 </head>
 <body>
     <h1>New contact message!</h1>
-    <p>Name: {{ $name }}</p>
-    <p>Email: {{ $email }}</p>
-    <p>Message: {{ $msg }}</p>
+    <p>Name: <?php echo $name ?></p>
+    <p>Email: <?php echo $email ?></p>
+    <p>Theme: <?php echo $theme ?></p>
+    <p>Message: <?php echo $msg ?></p>
 </body>
 </html>
 

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Mail;
+use App\Mail\MailClass;
 use Illuminate\Http\Request;
 use App\User;
 use App\Message;
 use Auth;
+use Mail;
 use Illuminate\Database\Eloquent\Model;
 
 class ContactController extends Controller
@@ -33,7 +34,7 @@ class ContactController extends Controller
         $roles = User::find($usersid)->roles;
         return view('contact')->with('roles', $roles);
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -56,24 +57,21 @@ class ContactController extends Controller
             $message->theme = $request->theme;
             $message->message = $request->message;
             $message->filename = $filename;
-            $message->mark = NULL;            
+            $message->mark = NULL;
             $user->messages()->save($message);
 
-            Mail::send('emails.contact-message',
-                ['theme' => $request->theme, 'msg' => $request->message,
-                 'name' => $userName, 'email' => $userEmail],
-            function ($mail) use($user) {
-                $mail->from($user->email, $user->name);
-                $mail->to(env('MAIL_ADMIN_EMAIL'))->subject('Contact Message');
-                
-            });
+            Mail::to($request->user())
+                ->send(new MailClass($request->user()->name, $request->user()->email,
+                                     $message->theme, $message->message));
+
 
             return redirect()->back()->with('status', 'Message sent successfully!');
-            
+
+
         } else {
             return redirect()->route('register');
         }
 
-    }     
-    
+    }
+
 }
